@@ -24,7 +24,7 @@ const nextConfig = {
         ]
     },
     publicRuntimeConfig: {
-        apiHost: 'fake_test_value',
+        apiHost: process.env.API_HOST,
     },
 }
 
