@@ -1,34 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a codebase that reproduces the issue with Next.js v12.0.1 as reported
+in [Issue #30498](https://github.com/vercel/next.js/issues/30498).
 
-## Getting Started
+This app is configured to run on port `2000`.
 
-First, run the development server:
+# Issue Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+Running the app with different `NODE_ENV`s set produces different behaviors in the browser. In this case, the
+application works as expected when running in development mode (`next dev`), renders but is unresponsive in test
+mode (`NODE_ENV=test next start`) and crashes in production (`next start`).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Steps to Reproduce
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+To reproduce the issue, simply visit the /about page in your web browser (http://localhost:2000/about) using the
+following steps to build the app.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+> Be sure to delete the `.next` directory between runs to ensure there is nothing cached
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Development Mode
 
-## Learn More
+The application functions as expected
 
-To learn more about Next.js, take a look at the following resources:
+1. Start the server in development mode
+    ```bash
+   # Using commands from package.json
+   npm run dev 
+   
+   # Running via npx
+   npx next dev
+    ```
+2. Check the build logs - ensure there are no errors or unexpected warnings.
+3. Visit [http://localhost:2000/about](http://localhost:2000/about)
+4. Click the button that says "Increase Count" and notice the displayed value increases.
+5. Check the browser console. No errors.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Test Mode
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The application functions as expected
 
-## Deploy on Vercel
+1. Start the server in development mode
+    ```bash
+   # Using commands from package.json
+   npm run build:test && npm run start:test
+   
+   # Running via npx
+   NODE_ENV=test npx next build
+   NODE_ENV=test npx next start -p 2000    
+    ```
+2. Check the build logs - ensure there are no errors or unexpected warnings.
+3. Visit [http://localhost:2000/about](http://localhost:2000/about)
+4. Click "Increase Count" and notice that **nothing happens**.
+5. Check the browser console. No errors.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Production Mode
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The application functions as expected
+
+1. Start the server in development mode
+    ```bash
+   # Using commands from package.json
+   npm run build && npm run start
+   
+   # Running via npx
+   npx next build
+   npx next start -p 2000    
+    ```
+2. Check the build logs - notice there are no errors or unexpected warnings.
+3. Visit [http://localhost:2000/about](http://localhost:2000/about)
+4. The page crashes with an application error
+5. Check the browser console and notice there is an error thrown from `Forms.ts`, which comes form the `yup` library.
