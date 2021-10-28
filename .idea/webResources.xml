@@ -10,6 +10,7 @@
             <path value="file://$PROJECT_DIR$/src/components" />
             <path value="file://$PROJECT_DIR$/styles" />
             <path value="file://$PROJECT_DIR$/cypress" />
+            <path value="file://$PROJECT_DIR$/src/store" />
           </resourceRoots>
         </entryData>
       </entry>

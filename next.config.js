@@ -21,11 +21,12 @@ const nextConfig = {
                 destination: '/about',
                 permanent: true,
             },
-        ]
+        ];
     },
     publicRuntimeConfig: {
         apiHost: process.env.API_HOST,
+        tagManagerID: process.env.TAG_MANAGER_ID,
     },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
