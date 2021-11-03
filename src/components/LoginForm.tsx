@@ -1,7 +1,7 @@
 import { Schemas } from '@components/Forms';
 
 type Props = { onSuccess: () => void };
-import { Form, Formik, Field, FormikHelpers } from 'formik';
+import { Form, Formik, Field, FormikHelpers, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 const LoginSchema = Yup.object({
@@ -24,9 +24,16 @@ const LoginForm = ({ onSuccess }: Props) => {
     return (
         <Formik initialValues={initialValues} validationSchema={LoginSchema} onSubmit={handleSubmit}>
             {() => (
-                <Form>
-                    <Field type="email" name="email" placeholder="Email" />
-                    <Field type="password" name="password" placeholder="Password" />
+                <Form className="p-4 space-y-4" noValidate>
+                    <div>
+                        <Field type="email" name="email" placeholder="Email" />
+                        <ErrorMessage name="email" />
+                    </div>
+                    <div>
+                        <Field type="password" name="password" placeholder="Password" />
+                        <ErrorMessage name="password" />
+                    </div>
+                    <button type="submit">Submit</button>
                 </Form>
             )}
         </Formik>

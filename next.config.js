@@ -3,7 +3,7 @@ const nextConfig = {
     poweredByHeader: false,
     productionBrowserSourceMaps: true,
     reactStrictMode: false,
-    swcMinify: true,
+    swcMinify: false,
     outputFileTracing: false,
     images: {
         domains: ['cdn.bfldr.com'],
